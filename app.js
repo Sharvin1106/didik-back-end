@@ -1,10 +1,11 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-require("dotenv/config");
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 
-
-app.use(express.json())
+app.use(express.json());
 //Import Routes
 
 const servicesRoute = require("./routes/services");
