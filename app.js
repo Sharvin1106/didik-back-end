@@ -14,6 +14,7 @@ app.use("/services", servicesRoute);
 //ROUTES
 app.get("/", (req, res) => {
   res.write("<h1>Testing Didik</h1>");
+  res.send();
 });
 
 //Connect to DB
