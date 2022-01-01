@@ -13,7 +13,7 @@ app.use("/services", servicesRoute);
 
 //ROUTES
 app.get("/", (req, res) => {
-  res.send("Testing Didik");
+  res.write("<h1>Testing Didik</h1>");
 });
 
 //Connect to DB
