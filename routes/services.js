@@ -1,23 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const authConfig = require("../auth-config.json");
-const jwt = require("express-jwt");
-const jwksRsa = require("jwks-rsa");
+const authorizeAccessToken = require("../utils/jwtValidate")
 const Service = require("../models/Service");
 
-const authorizeAccessToken = jwt({
-  secret: jwksRsa.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 5,
-    jwksUri: `https://${authConfig.domain}/.well-known/jwks.json`,
-  }),
-  audience: authConfig.audience,
-  issuer: `https://${authConfig.domain}/`,
-  algorithms: ["RS256"],
-});
+
 //Gets all the posts
-router.get("/", authorizeAccessToken, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const services = await Service.find();
     res.json(services);
