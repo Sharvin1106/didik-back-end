@@ -19,7 +19,10 @@ router.post("/", async (req, res) => {
   const service = new Service({
     title: req.body.title,
     description: req.body.description,
+    pricing: req.body.pricing,
+    lessons: req.body.lessons,
   });
+  console.log(req)
   try {
     const savedService = await service.save();
     res.json(savedService);

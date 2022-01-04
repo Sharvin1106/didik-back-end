@@ -11,6 +11,14 @@ const ServiceSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  pricing: {
+    type: String,
+    required: true,
+  },
+  lessons: {
+    type: String,
+    required: true,
+  },
   date: {
     type: Date,
     default: Date.now(),
