@@ -15,10 +15,12 @@ app.use(express.json());
 const servicesRoute = require("./routes/services");
 const subjectsRoute = require("./routes/subjects");
 const usersRoute = require("./routes/users");
+const dashboardRoute = require("./routes/dashboard")
 
 app.use("/services", servicesRoute);
 app.use("/subjects", subjectsRoute);
 app.use("/users", usersRoute);
+app.use("/dashboard", dashboardRoute);
 
 //ROUTES
 app.get("/", authorizeAccessToken, (req, res) => {
