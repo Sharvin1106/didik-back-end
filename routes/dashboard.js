@@ -5,7 +5,7 @@ const Dashboard = require("../models/Dashboard");
 const User = require("../models/User");
 
 //Gets all the posts
-router.get("/", authorizeAccessToken, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const dashboard = await Dashboard.find();
     res.json(dashboard);
@@ -14,6 +14,14 @@ router.get("/", authorizeAccessToken, async (req, res) => {
   }
 });
 
+router.get("/:dashboardId", async (req, res) => {
+  try {
+    const dashboard = await Dashboard.findById(req.params.dashboardId);
+    res.json(dashboard);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
 //Submit a posts
 router.post("/", async (req, res) => {
   const dashboard = new Dashboard({
@@ -24,10 +32,10 @@ router.post("/", async (req, res) => {
   console.log(req);
   try {
     const savedDashboard = await dashboard.save();
-    await User.findByIdAndUpdate(student, {
+    await User.findByIdAndUpdate(req.body.student, {
       $push: { dashboard: savedDashboard._id },
     });
-    await User.findByIdAndUpdate(tutor, {
+    await User.findByIdAndUpdate(req.body.tutor, {
       $push: { dashboard: savedDashboard._id },
     });
     res.json(savedDashboard);
