@@ -17,12 +17,14 @@ const subjectsRoute = require("./routes/subjects");
 const usersRoute = require("./routes/users");
 const dashboardRoute = require("./routes/dashboard");
 const sectionRoute = require("./routes/section");
+const paymentRoute = require("./routes/payment");
 
 app.use("/services", servicesRoute);
 app.use("/subjects", subjectsRoute);
 app.use("/users", usersRoute);
 app.use("/dashboard", dashboardRoute);
 app.use("/section", sectionRoute);
+app.use("/payments", paymentRoute);
 
 //ROUTES
 app.get("/", authorizeAccessToken, (req, res) => {
