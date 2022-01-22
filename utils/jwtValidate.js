@@ -1,17 +1,23 @@
-const authConfig = require("../auth-config.json");
-const jwt = require("express-jwt");
-const jwksRsa = require("jwks-rsa");
+const admin = require("firebase-admin")
 
-const authorizeAccessToken = jwt({
-  secret: jwksRsa.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 5,
-    jwksUri: `https://${authConfig.domain}/.well-known/jwks.json`,
-  }),
-  audience: authConfig.audience,
-  issuer: `https://${authConfig.domain}/`,
-  algorithms: ["RS256"],
-});
+const authorizeAccessToken = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (authHeader) {
+    const idToken = authHeader.split(" ")[1];
+    admin
+      .auth()
+      .verifyIdToken(idToken)
+      .then(function (decodedToken) {
+        return next();
+      })
+      .catch(function (error) {
+        console.log(error);
+        return res.sendStatus(403);
+      });
+  } else {
+    res.sendStatus(401);
+  }
+};
 
 module.exports = authorizeAccessToken;
