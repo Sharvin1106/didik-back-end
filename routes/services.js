@@ -37,6 +37,7 @@ router.post("/", async (req, res) => {
     lessons: req.body.lessons,
     mode: req.body.mode,
     medium: req.body.medium,
+    img: req.body.imgUrl,
   });
   console.log(req);
   try {
