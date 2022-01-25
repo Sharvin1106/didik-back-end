@@ -33,7 +33,6 @@ const ServiceSchema = mongoose.Schema({
   },
   tag: {
     type: String,
-    required: true,
   },
   tutor: {
     type: mongoose.Schema.Types.ObjectId,
