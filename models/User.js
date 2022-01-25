@@ -23,6 +23,14 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+    required: true,
+  },
+  age: {
+    type: Number,
+    required: true,
+  },
   dashboard: [
     {
       type: mongoose.Schema.Types.ObjectId,
