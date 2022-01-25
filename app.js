@@ -5,6 +5,12 @@ const app = express();
 const mongoose = require("mongoose");
 const initFirebase = require("./config");
 const authorizeAccessToken = require("./utils/jwtValidate");
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
