@@ -4,7 +4,7 @@ const authorizeAccessToken = require("../utils/jwtValidate");
 const User = require("../models/User");
 
 //Gets all the posts
-router.get("/", async (req, res) => {
+router.get("/", authorizeAccessToken, async (req, res) => {
   try {
     const users = await User.find();
     res.json(users);
@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
 });
 
 //Submit a posts
-router.post("/",  async (req, res) => {
+router.post("/", authorizeAccessToken, async (req, res) => {
   const user = new User({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -22,7 +22,8 @@ router.post("/",  async (req, res) => {
     uid: req.body.uid,
     role: req.body.role,
     description: req.body.description,
-    age: req.body.age
+    age: req.body.age,
+    profilePic: req.body.profilePic,
   });
   console.log(req);
   try {
@@ -33,25 +34,42 @@ router.post("/",  async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", authorizeAccessToken, async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
+      .populate("courses")
+      .populate("dashboard")
+      .exec();
     res.json(user);
   } catch (err) {
     res.json({ message: err });
   }
 });
 
-router.patch("/:id", async (req, res) => {
+router.get("/public/:id/user", async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(req.params.id,req.body,{new:true})
+    const user = await User.find(
+      { _id: req.params.id },
+      { dashboard: 0, uid: 0 }
+    );
     res.json(user);
   } catch (err) {
     res.json({ message: err });
   }
 });
 
-router.get("/authUser/:uid", async (req, res) => {
+router.patch("/:id", authorizeAccessToken, async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    res.json(user);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
+router.get("/authUser/:uid", authorizeAccessToken, async (req, res) => {
   try {
     const user = await User.find({ uid: req.params.uid });
     res.json(user);

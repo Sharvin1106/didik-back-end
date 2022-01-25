@@ -2,9 +2,8 @@ const mongoose = require("mongoose");
 
 const ConversationSchema = new mongoose.Schema(
   {
-    members: {
-      type: Array,
-    },
+    student: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
+    tutor: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
   },
   { timestamps: true }
 );

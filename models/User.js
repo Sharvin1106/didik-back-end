@@ -43,6 +43,7 @@ const UserSchema = mongoose.Schema({
       ref: "Services",
     },
   ],
+  profilePic: { type: String, required: false },
 });
 
 module.exports = mongoose.model("Users", UserSchema);
