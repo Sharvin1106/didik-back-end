@@ -57,6 +57,17 @@ router.get("/:serviceId", async (req, res) => {
   }
 });
 
+router.get("/cart/items", async (req, res) => {
+  try {
+    const service = await Service.find({
+      _id: { $in: JSON.parse(req.query.services) },
+    });
+    res.json(service);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
 router.delete("/:serviceId", async (req, res) => {
   try {
     const removedService = await Service.remove({ _id: req.params.serviceId });
