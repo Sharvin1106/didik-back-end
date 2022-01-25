@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const authorizeAccessToken = require("../utils/jwtValidate")
+const authorizeAccessToken = require("../utils/jwtValidate");
 const Service = require("../models/Service");
-
-
+const mongoose = require("mongoose");
 //Gets all the posts
 router.get("/", async (req, res) => {
   try {
@@ -22,7 +21,7 @@ router.post("/", async (req, res) => {
     pricing: req.body.pricing,
     lessons: req.body.lessons,
   });
-  console.log(req)
+  console.log(req);
   try {
     const savedService = await service.save();
     res.json(savedService);
@@ -34,6 +33,17 @@ router.post("/", async (req, res) => {
 router.get("/:serviceId", async (req, res) => {
   try {
     const service = await Service.findById(req.params.serviceId);
+    res.json(service);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
+router.get("/cart/items", async (req, res) => {
+  try {
+    const service = await Service.find({
+      _id: { $in: JSON.parse(req.query.services) },
+    });
     res.json(service);
   } catch (err) {
     res.json({ message: err });

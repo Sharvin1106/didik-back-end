@@ -7,11 +7,15 @@ const PaymentKeys = {
 };
 
 const PaymentSchema = mongoose.Schema({
-  course: { type: mongoose.Schema.Types.ObjectId, ref: "Services" },
+  courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Services" }],
   amount: { type: Number, required: true },
   date: {
     type: Date,
     default: Date.now(),
+  },
+  paymentLink: {
+    type: String,
+    required: true,
   },
   paymentType: {
     type: String,
