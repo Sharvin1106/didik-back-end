@@ -24,6 +24,7 @@ const subjectsRoute = require("./routes/subjects");
 const usersRoute = require("./routes/users");
 const dashboardRoute = require("./routes/dashboard");
 const sectionRoute = require("./routes/section");
+const paymentRoute = require("./routes/payment");
 
 //Chatbox
 const conversationRoute = require("./routes/conversations");
@@ -34,6 +35,7 @@ app.use("/subjects", subjectsRoute);
 app.use("/users", usersRoute);
 app.use("/dashboard", dashboardRoute);
 app.use("/section", sectionRoute);
+app.use("/payments", paymentRoute);
 
 //Chatbox
 app.use("/conversations", conversationRoute);
