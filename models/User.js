@@ -23,6 +23,14 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+    required: true,
+  },
+  age: {
+    type: Number,
+    required: true,
+  },
   dashboard: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -35,6 +43,7 @@ const UserSchema = mongoose.Schema({
       ref: "Services",
     },
   ],
+  profilePic: { type: String, required: false },
 });
 
 module.exports = mongoose.model("Users", UserSchema);

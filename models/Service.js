@@ -38,6 +38,10 @@ const ServiceSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
   },
+  students: {
+    type: Number,
+  },
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   date: {
     type: Date,
     default: Date.now(),

@@ -3,7 +3,7 @@ const router = express.Router();
 const authorizeAccessToken = require("../utils/jwtValidate");
 const Service = require("../models/Service");
 
-//Gets all the posts
+//Gets all the service
 router.get("/", async (req, res) => {
   const child = req.query.child;
   let parent = req.query.parent;
@@ -28,8 +28,8 @@ router.get("/", async (req, res) => {
   }
 });
 
-//Submit a posts
-router.post("/", async (req, res) => {
+//Create a service
+router.post("/", authorizeAccessToken, async (req, res) => {
   const service = new Service({
     title: req.body.title,
     description: req.body.description,
@@ -57,7 +57,18 @@ router.get("/:serviceId", async (req, res) => {
   }
 });
 
-router.delete("/:serviceId", async (req, res) => {
+router.get("/cart/items", authorizeAccessToken, async (req, res) => {
+  try {
+    const service = await Service.find({
+      _id: { $in: JSON.parse(req.query.services) },
+    });
+    res.json(service);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
+router.delete("/:serviceId", authorizeAccessToken, async (req, res) => {
   try {
     const removedService = await Service.remove({ _id: req.params.serviceId });
     res.json(removedService);
