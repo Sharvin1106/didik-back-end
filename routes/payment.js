@@ -28,7 +28,23 @@ router.get("/payment/:paymentId/topay", async (req, res) => {
   try {
     const payment = await Payment.findById(
       new mongoose.Types.ObjectId(req.params.paymentId)
-    ).populate("courses").exec();
+    )
+      .populate("courses")
+      .exec();
+    res.json(payment);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+router.get("/allpayments/:studentId/topay", async (req, res) => {
+  try {
+    const payment = await Payment.find(
+      { student: req.params.studentId },
+      { paymentType: "toPay" }
+    )
+      .populate("courses")
+      .exec();
     res.json(payment);
   } catch (err) {
     console.log(err);
