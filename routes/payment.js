@@ -15,6 +15,7 @@ router.post("/create-payment-intent", async (req, res) => {
     const payment = new Payment({
       courses: req.body.courses,
       amount: req.body.amount,
+      student: req.body.student,
       paymentLink: paymentIntent.client_secret,
     });
     const savedPayment = await payment.save();
@@ -27,10 +28,21 @@ router.get("/payment/:paymentId/topay", async (req, res) => {
   try {
     const payment = await Payment.findById(
       new mongoose.Types.ObjectId(req.params.paymentId)
-    ).populate("courses");
+    ).populate("courses").exec();
     res.json(payment);
   } catch (err) {
     console.log(err);
+  }
+});
+
+router.post("/confirmPayment", async (req, res) => {
+  try {
+    const payment = await Payment.findByIdAndUpdate(req.body.paymentId, {
+      $set: { paymentType: "Paid" },
+    });
+    return res.json(payment);
+  } catch (err) {
+    res.json({ message: err });
   }
 });
 
