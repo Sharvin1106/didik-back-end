@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authorizeAccessToken = require("../utils/jwtValidate");
 const Service = require("../models/Service");
+const User = require("../models/User");
 
 //Gets all the service
 router.get("/", async (req, res) => {
@@ -38,10 +39,14 @@ router.post("/", authorizeAccessToken, async (req, res) => {
     mode: req.body.mode,
     medium: req.body.medium,
     img: req.body.imgUrl,
+    tutor: req.body.tutor,
   });
   console.log(req);
   try {
     const savedService = await service.save();
+    await User.findByIdAndUpdate(req.body.tutor, {
+      $push: { courses: savedService._id },
+    });
     res.json(savedService);
   } catch (err) {
     res.json({ message: err });
