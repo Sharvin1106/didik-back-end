@@ -33,7 +33,6 @@ const ServiceSchema = mongoose.Schema({
   },
   tag: {
     type: String,
-    required: true,
   },
   tutor: {
     type: mongoose.Schema.Types.ObjectId,
@@ -41,6 +40,7 @@ const ServiceSchema = mongoose.Schema({
   },
   students: {
     type: Number,
+    default: 0,
   },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
   date: {
