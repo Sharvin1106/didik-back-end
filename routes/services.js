@@ -8,11 +8,32 @@ const User = require("../models/User");
 router.get("/", async (req, res) => {
   const child = req.query.child;
   let parent = req.query.parent;
-  if (parent !== undefined) {
+  if (parent !== undefined && parent == "Medium") {
     let parentLower = parent.toLowerCase();
     console.log(parentLower);
     console.log(child);
     var query = { [parentLower]: child };
+    try {
+      const services = await Service.find(query);
+      res.json(services);
+    } catch (err) {
+      res.json({ message: err });
+    }
+  } else if (parent !== undefined && parent == "Pricing") {
+    let parentLower = parent.toLowerCase();
+    console.log(parentLower);
+    console.log(child);
+    let query = {};
+    if (child === "<RM10") {
+      query = { [parentLower]: { $gt: 1, $lt: 10 } };
+    } else if (child == "RM10-RM50") {
+      query = { [parentLower]: { $gt: 11, $lt: 49 } };
+    } else if (child == "RM50-RM100") {
+      query = { [parentLower]: { $gt: 51, $lt: 99 } };
+    } else {
+      query = { [parentLower]: { $gt: 100, $lt: 1000 } };
+    }
+    console.log(query);
     try {
       const services = await Service.find(query);
       res.json(services);
@@ -26,6 +47,17 @@ router.get("/", async (req, res) => {
     } catch (err) {
       res.json({ message: err });
     }
+  }
+});
+
+// Get services according to tutor
+router.get("/tutor", async (req, res) => {
+  const tutorid = req.query.tutor
+  try {
+    const services = await Service.find({tutor: tutorid});
+    res.json(services);
+  } catch (err) {
+    res.json({ message: err });
   }
 });
 
@@ -55,7 +87,9 @@ router.post("/", authorizeAccessToken, async (req, res) => {
 
 router.get("/:serviceId", async (req, res) => {
   try {
-    const service = await Service.findById(req.params.serviceId);
+    const service = await Service.findById(req.params.serviceId)
+      .populate({ path: "comments", populate: { path: "student" } })
+      .exec();
     res.json(service);
   } catch (err) {
     res.json({ message: err });
@@ -86,7 +120,17 @@ router.patch("/:serviceId", async (req, res) => {
   try {
     const updatedService = await Service.updateOne(
       { _id: req.params.serviceId },
-      { $set: { title: req.body.title } }
+      {
+        $set: {
+          title: req.body.title,
+          description: req.body.description,
+          pricing: req.body.pricing,
+          lessons: req.body.lessons,
+          mode: req.body.mode,
+          medium: req.body.medium,
+          img: req.body.imgUrl,
+        },
+      }
     );
     res.json(updatedService);
   } catch (err) {

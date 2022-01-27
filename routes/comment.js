@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authorizeAccessToken = require("../utils/jwtValidate");
 const Comment = require("../models/Comment");
-const Service = require("../models/Service")
+const Service = require("../models/Service");
 
 //Gets all the comments
 router.get("/", async (req, res) => {
@@ -14,11 +14,13 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+
 //Submit a posts
-router.post("/", authorizeAccessToken, async (req, res) => {
+router.post("/", async (req, res) => {
   const comment = new Comment({
-    message: req.body.dashboard,
-    rating: req.body.description,
+    message: req.body.message,
+    rating: req.body.rating,
     course: req.body.course,
     student: req.body.student,
   });
