@@ -14,7 +14,16 @@ router.get("/", authorizeAccessToken, async (req, res) => {
   }
 });
 
-//Submit a posts
+router.get("/:sectionId", async (req, res) => {
+  try {
+    const section = await Section.findById(req.params.sectionId);
+    res.json(section);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
+//Create a section
 router.post("/", async (req, res) => {
   const section = new Section({
     dashboard: req.body.dashboard,
