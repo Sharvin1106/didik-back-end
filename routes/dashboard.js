@@ -4,6 +4,7 @@ const authorizeAccessToken = require("../utils/jwtValidate");
 const Dashboard = require("../models/Dashboard");
 const Service = require("../models/Service");
 const User = require("../models/User");
+const mongoose = require("mongoose");
 
 //Gets all the posts
 router.get("/", async (req, res) => {
@@ -17,7 +18,13 @@ router.get("/", async (req, res) => {
 
 router.get("/:dashboardId", async (req, res) => {
   try {
-    const dashboard = await Dashboard.findById(req.params.dashboardId);
+    const dashboard = await Dashboard.findById(
+      mongoose.Types.ObjectId(req.params.dashboardId)
+    )
+      .populate("student")
+      .populate("tutor")
+      .populate("sections")
+      .exec();
     res.json(dashboard);
   } catch (err) {
     res.json({ message: err });
