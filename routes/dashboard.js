@@ -7,7 +7,7 @@ const User = require("../models/User");
 const mongoose = require("mongoose");
 
 //Gets all the posts
-router.get("/", async (req, res) => {
+router.get("/", authorizeAccessToken, async (req, res) => {
   try {
     const dashboard = await Dashboard.find();
     res.json(dashboard);
@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:dashboardId", async (req, res) => {
+router.get("/:dashboardId", authorizeAccessToken, async (req, res) => {
   try {
     const dashboard = await Dashboard.findById(
       mongoose.Types.ObjectId(req.params.dashboardId)
@@ -31,7 +31,7 @@ router.get("/:dashboardId", async (req, res) => {
   }
 });
 
-router.post("/register/student", async (req, res) => {
+router.post("/register/student", authorizeAccessToken, async (req, res) => {
   //Get all courses id
   const courses = req.body.courses;
 

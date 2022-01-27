@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
 
 
 //Submit a posts
-router.post("/", async (req, res) => {
+router.post("/", authorizeAccessToken, async (req, res) => {
   const comment = new Comment({
     message: req.body.message,
     rating: req.body.rating,

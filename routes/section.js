@@ -14,7 +14,7 @@ router.get("/", authorizeAccessToken, async (req, res) => {
   }
 });
 
-router.get("/:sectionId", async (req, res) => {
+router.get("/:sectionId", authorizeAccessToken, async (req, res) => {
   try {
     const section = await Section.findById(req.params.sectionId);
     res.json(section);
@@ -24,7 +24,7 @@ router.get("/:sectionId", async (req, res) => {
 });
 
 //Create a section
-router.post("/", async (req, res) => {
+router.post("/", authorizeAccessToken, async (req, res) => {
   const section = new Section({
     dashboard: req.body.dashboard,
     sectionTitle: req.body.sectionTitle,
@@ -47,7 +47,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.patch("/:sectionId", async (req, res) => {
+router.patch("/:sectionId", authorizeAccessToken, async (req, res) => {
   try {
     const updatedSection = await Section.updateOne(
       { _id: req.params.sectionId },
