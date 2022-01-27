@@ -23,7 +23,7 @@ router.post("/", authorizeAccessToken, async (req, res) => {
     role: req.body.role,
     description: req.body.description,
     age: req.body.age,
-    profilePic: req.body.profilePic,
+    profilePic: req.body.imgUrl,
   });
   console.log(req);
   try {
