@@ -60,7 +60,7 @@ router.post("/", async (req, res) => {
     mode: req.body.mode,
     medium: req.body.medium,
     img: req.body.imgUrl,
-    tutor: req.body.tutor
+    tutor: req.body.tutor,
   });
   console.log(req);
   try {
@@ -109,7 +109,18 @@ router.patch("/:serviceId", async (req, res) => {
   try {
     const updatedService = await Service.updateOne(
       { _id: req.params.serviceId },
-      { $set: { title: req.body.title } }
+      {
+        $set: {
+          title: req.body.title,
+          description: req.body.description,
+          pricing: req.body.pricing,
+          lessons: req.body.lessons,
+          mode: req.body.mode,
+          medium: req.body.medium,
+          img: req.body.imgUrl,
+          tutor: req.body.tutor,
+        },
+      }
     );
     res.json(updatedService);
   } catch (err) {
