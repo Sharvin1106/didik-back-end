@@ -27,7 +27,13 @@ router.get("/:sectionId", async (req, res) => {
 router.post("/", async (req, res) => {
   const section = new Section({
     dashboard: req.body.dashboard,
-    description: req.body.description,
+    sectionTitle: req.body.sectionTitle,
+    sectionDesc: req.body.sectionDesc,
+    startTime: req.body.startTime,
+    endTime: req.body.endTime,
+    platform: req.body.platform,
+    meetingLink: req.body.meetingLink,
+    notesLink: req.body.notesLink,
   });
   console.log(req);
   try {
@@ -53,4 +59,12 @@ router.patch("/:sectionId", async (req, res) => {
   }
 });
 
+router.delete("/:sectionId", authorizeAccessToken, async (req, res) => {
+  try {
+    const removedSection = await Section.deleteOne({ _id: req.params.sectionId });
+    res.json(removedSection);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
 module.exports = router;
