@@ -50,8 +50,19 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Get services according to tutor
+router.get("/tutor", async (req, res) => {
+  const tutorid = req.query.tutor
+  try {
+    const services = await Service.find({tutor: tutorid});
+    res.json(services);
+  } catch (err) {
+    res.json({ message: err });
+  }
+});
+
 //Create a service
-router.post("/", async (req, res) => {
+router.post("/", authorizeAccessToken, async (req, res) => {
   const service = new Service({
     title: req.body.title,
     description: req.body.description,
@@ -118,7 +129,6 @@ router.patch("/:serviceId", async (req, res) => {
           mode: req.body.mode,
           medium: req.body.medium,
           img: req.body.imgUrl,
-          tutor: req.body.tutor,
         },
       }
     );
