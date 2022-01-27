@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authorizeAccessToken = require("../utils/jwtValidate");
 const Service = require("../models/Service");
+const User = require("../models/User");
 
 //Gets all the service
 router.get("/", async (req, res) => {
