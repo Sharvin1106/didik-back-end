@@ -38,7 +38,14 @@ router.get("/:id", authorizeAccessToken, async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
       .populate("courses")
-      .populate("dashboard")
+      .populate({
+        path: 'dashboard',
+        populate: [{
+          path: 'course'
+        },{
+          path: 'student'
+        }]
+      })
       .exec();
     res.json(user);
   } catch (err) {
@@ -79,3 +86,4 @@ router.get("/authUser/:uid", authorizeAccessToken, async (req, res) => {
 });
 
 module.exports = router;
+// authorizeAccessToken,
